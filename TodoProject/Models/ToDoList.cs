@@ -7,9 +7,5 @@
         public string Description { get; set; }
         public List<ToDoListItems> Items { get; set; }
 
-        public ToDoList()
-        {
-            Items = new List<ToDoListItems>();
-        }
     }
 }

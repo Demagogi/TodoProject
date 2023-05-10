@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Diagnostics;
 using TodoProject.Models;
 
 namespace TodoProject.DATA
@@ -16,10 +17,12 @@ namespace TodoProject.DATA
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ToDoListItems>().HasData(new ToDoListItems {Id=1 , Title = "Test Task Item", Description = "This is test task item for vizualization" });
-            modelBuilder.Entity<ToDoList>().HasData(
-            new ToDoList { Id = 1, Name = "Test Task", Description = "This is test task for vizualization" }
-            );
+            // Configure the relationship
+            modelBuilder.Entity<ToDoList>()
+                .HasMany(tdl => tdl.Items) // ToDoList has many ToDoListItems
+                .WithOne(tdi => tdi.ToDoList) // ToDoListItem has one ToDoList
+                .HasForeignKey(tdi => tdi.ToDoListId); // Use ToDoListId as the foreign key
         }
+
     }
 }
