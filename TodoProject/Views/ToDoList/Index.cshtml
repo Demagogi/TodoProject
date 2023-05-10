@@ -1,1 +1,32 @@
-﻿<h1>ToDoList View</h1>
+﻿@model List<ToDoList> 
+
+<div class="container">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary"> ToDo List </h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="ToDoList" asp-action="Create" class="btn btn-primary"> Create new ToDo</a>
+        </div>
+    </div>
+    <table class="table table-boarded table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th> Name</th>
+                <th> Description </th>
+                <th> Items </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @foreach (var obj in Model)
+                {
+                    <td>@obj.Id</td>
+                    <td> @obj.Name </td>
+                    <td> @obj.Description </td>
+                }
+            </tr>
+        </tbody>
+    </table>
+</div>
