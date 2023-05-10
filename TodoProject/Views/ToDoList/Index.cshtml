@@ -24,8 +24,8 @@
                         <td>@obj.Id</td>
                         <td> @obj.Name </td>
                         <td> @obj.Description </td>
-                        <td><a asp-controller="ToDoList" asp-action="Edit" class="btn btn-secondary text-end bg-info"> Edit </a></td>
-                        <td><a asp-controller="ToDoList" asp-action="Delete" class="btn btn-secondary text-end bg-danger"> Delete </a></td>
+                    <td><a asp-controller="ToDoList" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-secondary text-end bg-info"> Edit </a></td>
+                    <td><a asp-controller="ToDoList" asp-action="Delete" asp-route-Id="@obj.Id" class="btn btn-secondary text-end bg-danger"> Delete </a></td>
                     </tr>
                 }
         </tbody>
