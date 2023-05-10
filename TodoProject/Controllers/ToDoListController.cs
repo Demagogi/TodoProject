@@ -31,5 +31,58 @@ namespace TodoProject.Controllers
             _db.SaveChanges(); 
             return RedirectToAction("Index", "ToDoList"); 
         }
+
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            ToDoList ToDoFromDb = _db.ToDoList.Find(id);
+            if (ToDoFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(ToDoFromDb);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(ToDoList obj)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.ToDoList.Update(obj);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
+        public IActionResult Delete(int? id) 
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            ToDoList categoryFromDb = _db.ToDoList.Find(id); 
+            if (categoryFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(categoryFromDb);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeletePost(int? id) 
+        {
+            ToDoList obj = _db.ToDoList.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            _db.ToDoList.Remove(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }

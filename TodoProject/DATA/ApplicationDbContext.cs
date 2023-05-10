@@ -13,15 +13,10 @@ namespace TodoProject.DATA
         }
 
         public DbSet<ToDoList> ToDoList { get; set; }
-        public DbSet<ToDoListItems> ToDoListItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configure the relationship
-            modelBuilder.Entity<ToDoList>()
-                .HasMany(tdl => tdl.Items) // ToDoList has many ToDoListItems
-                .WithOne(tdi => tdi.ToDoList) // ToDoListItem has one ToDoList
-                .HasForeignKey(tdi => tdi.ToDoListId); // Use ToDoListId as the foreign key
+            modelBuilder.Entity<ToDoList>().HasData(new ToDoList { Id=1, Name="Test Task", Description = "Test Task Description"});
         }
 
     }

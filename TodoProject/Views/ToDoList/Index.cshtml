@@ -15,18 +15,19 @@
                 <th>ID</th>
                 <th> Name</th>
                 <th> Description </th>
-                <th> Items </th>
             </tr>
         </thead>
         <tbody>
-            <tr>
                 @foreach (var obj in Model)
                 {
-                    <td>@obj.Id</td>
-                    <td> @obj.Name </td>
-                    <td> @obj.Description </td>
+                    <tr>
+                        <td>@obj.Id</td>
+                        <td> @obj.Name </td>
+                        <td> @obj.Description </td>
+                        <td><a asp-controller="ToDoList" asp-action="Edit" class="btn btn-secondary text-end bg-info"> Edit </a></td>
+                        <td><a asp-controller="ToDoList" asp-action="Delete" class="btn btn-secondary text-end bg-danger"> Delete </a></td>
+                    </tr>
                 }
-            </tr>
         </tbody>
     </table>
 </div>
