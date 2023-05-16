@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TodoProject.DATA;
 
@@ -10,9 +11,11 @@ using TodoProject.DATA;
 namespace TodoProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230512134334_AddedNewTaskItem")]
+    partial class AddedNewTaskItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,11 +90,13 @@ namespace TodoProject.Migrations
 
             modelBuilder.Entity("TodoProject.Models.ToDoListItems", b =>
                 {
-                    b.HasOne("TodoProject.Models.ToDoList", null)
+                    b.HasOne("TodoProject.Models.ToDoList", "ToDoList")
                         .WithMany("Items")
                         .HasForeignKey("ToDoListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ToDoList");
                 });
 
             modelBuilder.Entity("TodoProject.Models.ToDoList", b =>

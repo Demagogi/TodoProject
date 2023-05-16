@@ -1,0 +1,33 @@
+﻿@model ToDoListItemsViewModel
+
+<div class="container">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary"> Items </h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="ToDoList" asp-action="CreateItem" asp-route-id="@Model.ToDoListId" class="btn btn-primary"> Add new Item </a>
+        </div>
+    </div>
+    <table class="table table-boarded table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th> Title </th>
+                <th> Description </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model.Items)
+            {
+                <tr>
+                    <td>@obj.Id</td>
+                    <td> @obj.Title </td>
+                    <td> @obj.Description </td>
+                    <td><a asp-controller="ToDoList" asp-action="EditItem"   asp-route-Id="@obj.Id" class="btn btn-secondary text-end bg-info"> Edit </a></td>
+                    <td><a asp-controller="ToDoList" asp-action="DeleteItem" asp-route-Id="@obj.Id" class="btn btn-secondary text-end bg-danger"> Delete </a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

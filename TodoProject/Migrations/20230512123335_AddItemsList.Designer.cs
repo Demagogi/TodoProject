@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TodoProject.DATA;
 
@@ -10,9 +11,11 @@ using TodoProject.DATA;
 namespace TodoProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230512123335_AddItemsList")]
+    partial class AddItemsList
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,9 +47,9 @@ namespace TodoProject.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 10,
-                            Description = "Test Task 10 Description",
-                            Name = "Test Task 10"
+                            Id = 1,
+                            Description = "Test Task Description",
+                            Name = "Test Task"
                         });
                 });
 
@@ -78,20 +81,22 @@ namespace TodoProject.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 2,
-                            Description = "Test Task 10 Description",
-                            Title = "Test Task 10 Item",
-                            ToDoListId = 10
+                            Id = 1,
+                            Description = "Test Task Description",
+                            Title = "Test Task Item",
+                            ToDoListId = 1
                         });
                 });
 
             modelBuilder.Entity("TodoProject.Models.ToDoListItems", b =>
                 {
-                    b.HasOne("TodoProject.Models.ToDoList", null)
+                    b.HasOne("TodoProject.Models.ToDoList", "ToDoList")
                         .WithMany("Items")
                         .HasForeignKey("ToDoListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ToDoList");
                 });
 
             modelBuilder.Entity("TodoProject.Models.ToDoList", b =>
