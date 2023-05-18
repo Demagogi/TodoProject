@@ -1,0 +1,18 @@
+﻿@model UserModel
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post))
+{
+    <div>
+        @Html.LabelFor(m => m.UserName)
+        @Html.TextBoxFor(m => m.UserName)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.PassWord)
+        @Html.PasswordFor(m => m.PassWord)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Role)
+        @Html.DropDownListFor(m => m.Role, Enum.GetValues(typeof(UserRoles)).Cast<UserRoles>().Select(r => new SelectListItem { Text = r.ToString(), Value = r.ToString() }))
+    </div>
+    <input type="submit" value="Register" />
+}

@@ -14,6 +14,8 @@ namespace TodoProject.DATA
         public DbSet<ToDoList> ToDoList { get; set; }
         public DbSet<ToDoListItems> ToDoListItems { get; set; } 
 
+        public DbSet<UserModel> Users { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configure TodoList and TodoListItem entities
@@ -26,6 +28,8 @@ namespace TodoProject.DATA
             modelBuilder.Entity<ToDoList>().HasData(new ToDoList { Id = 10, Name = "Test Task 10", Description = "Test Task 10 Description" });
 
             modelBuilder.Entity<ToDoListItems>().HasData(new ToDoListItems { Id = 2, Title = "Test Task 10 Item", Description = "Test Task 10 Description", ToDoListId = 10 });
+
+            modelBuilder.Entity<UserModel>().Property(u => u.Role).HasColumnName("UserRole");
         }
 
 

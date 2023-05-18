@@ -1,0 +1,14 @@
+﻿@model UserModel
+
+@using (Html.BeginForm("Login", "Account", FormMethod.Post))
+{
+    <div>
+        @Html.LabelFor(m => m.UserName)
+        @Html.TextBoxFor(m => m.UserName)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.PassWord)
+        @Html.PasswordFor(m => m.PassWord)
+    </div>
+    <input type="submit" value="Login" />
+}
