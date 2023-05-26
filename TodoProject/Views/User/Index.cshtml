@@ -1,5 +1,34 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model UserModel
+
+
+<div class="container">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary"> @Model.UserName ToDo List </h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="ToDoList" asp-action="Create" asp-route-Id="@Model.Id" class="btn btn-primary"> Create new ToDo</a>
+        </div>
+    </div>
+    @if (Model.UserToDos != null)
+    {
+        <table class="table table-boarded table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th> Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model.UserToDos)
+                {
+                    <tr>
+                        <td>@obj.Id</td>
+                        <td> @obj.Name </td>
+                        <td><a asp-controller="ToDoList" asp-action="Details" asp-route-Id="@obj.Id" class="btn btn-secondary text-end bg-info"> Details </a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

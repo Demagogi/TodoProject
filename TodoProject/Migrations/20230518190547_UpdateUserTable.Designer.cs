@@ -11,8 +11,8 @@ using TodoProject.DATA;
 namespace TodoProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230512130100_TestingItems")]
-    partial class TestingItems
+    [Migration("20230518190547_UpdateUserTable")]
+    partial class UpdateUserTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,7 +40,12 @@ namespace TodoProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserModelId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserModelId");
 
                     b.ToTable("ToDoList");
 
@@ -48,8 +53,9 @@ namespace TodoProject.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "Test Task Description",
-                            Name = "Test Task"
+                            Description = "Test Task 10 Description",
+                            Name = "Test Task 10",
+                            UserModelId = 1
                         });
                 });
 
@@ -82,26 +88,72 @@ namespace TodoProject.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "Test Task Description",
-                            Title = "Test Task Item",
+                            Description = "Test Task 10 Description",
+                            Title = "Test Task 10 Item",
                             ToDoListId = 1
                         });
                 });
 
+            modelBuilder.Entity("TodoProject.Models.UserModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("PassWord")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int")
+                        .HasColumnName("UserRole");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            PassWord = "ramdariro",
+                            Role = 1,
+                            UserName = "TestUser"
+                        });
+                });
+
+            modelBuilder.Entity("TodoProject.Models.ToDoList", b =>
+                {
+                    b.HasOne("TodoProject.Models.UserModel", null)
+                        .WithMany("UserToDos")
+                        .HasForeignKey("UserModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TodoProject.Models.ToDoListItems", b =>
                 {
-                    b.HasOne("TodoProject.Models.ToDoList", "ToDoList")
+                    b.HasOne("TodoProject.Models.ToDoList", null)
                         .WithMany("Items")
                         .HasForeignKey("ToDoListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ToDoList");
                 });
 
             modelBuilder.Entity("TodoProject.Models.ToDoList", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("TodoProject.Models.UserModel", b =>
+                {
+                    b.Navigation("UserToDos");
                 });
 #pragma warning restore 612, 618
         }

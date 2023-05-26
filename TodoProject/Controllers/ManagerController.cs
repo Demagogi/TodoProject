@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using TodoProject.DATA;
+using TodoProject.Models;
 
 namespace TodoProject.Controllers
 {
@@ -6,7 +9,7 @@ namespace TodoProject.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "ToDoList");
         }
     }
 }

@@ -37,16 +37,22 @@ namespace TodoProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserModelId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserModelId");
 
                     b.ToTable("ToDoList");
 
                     b.HasData(
                         new
                         {
-                            Id = 10,
+                            Id = 1,
                             Description = "Test Task 10 Description",
-                            Name = "Test Task 10"
+                            Name = "Test Task 10",
+                            UserModelId = 1
                         });
                 });
 
@@ -57,6 +63,10 @@ namespace TodoProject.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Condition")
+                        .HasColumnType("int")
+                        .HasColumnName("TaskItemCondition");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -78,10 +88,11 @@ namespace TodoProject.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 2,
+                            Id = 1,
+                            Condition = 0,
                             Description = "Test Task 10 Description",
                             Title = "Test Task 10 Item",
-                            ToDoListId = 10
+                            ToDoListId = 1
                         });
                 });
 
@@ -108,6 +119,24 @@ namespace TodoProject.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            PassWord = "ramdariro",
+                            Role = 1,
+                            UserName = "TestUser"
+                        });
+                });
+
+            modelBuilder.Entity("TodoProject.Models.ToDoList", b =>
+                {
+                    b.HasOne("TodoProject.Models.UserModel", null)
+                        .WithMany("UserToDos")
+                        .HasForeignKey("UserModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TodoProject.Models.ToDoListItems", b =>
@@ -122,6 +151,11 @@ namespace TodoProject.Migrations
             modelBuilder.Entity("TodoProject.Models.ToDoList", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("TodoProject.Models.UserModel", b =>
+                {
+                    b.Navigation("UserToDos");
                 });
 #pragma warning restore 612, 618
         }

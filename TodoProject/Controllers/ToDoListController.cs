@@ -21,17 +21,30 @@ namespace TodoProject.Controllers
             return View(objectToDoList);
         }
 
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
-            return View();
+            UserModel user = _db.Users.Include(t => t.UserToDos).FirstOrDefault(t => t.Id == id);
+            var todo = new CreateToDoListViewModel
+            {
+                UserModelId = user.Id
+            };
+            return View(todo);
         }
 
         [HttpPost]
-        public IActionResult Create(ToDoList obj) 
+        public IActionResult Create(CreateToDoListViewModel obj) 
         {
-            _db.ToDoList.Add(obj); 
-            _db.SaveChanges(); 
-            return RedirectToAction("Index", "ToDoList"); 
+            ToDoList list = new ToDoList
+            {
+                Name = obj.Name,
+                Description = obj.Description,
+                UserModelId = obj.UserModelId
+            };
+
+            _db.ToDoList.Add(list);
+            _db.SaveChanges();
+            return RedirectToAction("Index", "User", new { userId = obj.UserModelId });
+
         }
 
         public IActionResult CreateItem(int? id)

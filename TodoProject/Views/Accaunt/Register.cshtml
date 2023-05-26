@@ -1,18 +1,20 @@
 ﻿@model UserModel
 
-@using (Html.BeginForm("Register", "Account", FormMethod.Post))
-{
-    <div>
-        @Html.LabelFor(m => m.UserName)
-        @Html.TextBoxFor(m => m.UserName)
-    </div>
-    <div>
-        @Html.LabelFor(m => m.PassWord)
-        @Html.PasswordFor(m => m.PassWord)
-    </div>
-    <div>
-        @Html.LabelFor(m => m.Role)
-        @Html.DropDownListFor(m => m.Role, Enum.GetValues(typeof(UserRoles)).Cast<UserRoles>().Select(r => new SelectListItem { Text = r.ToString(), Value = r.ToString() }))
-    </div>
-    <input type="submit" value="Register" />
-}
+<form method="post">
+	<div class="border p-3 mt-4">
+		<div class="row pb-2">
+			<h2 class="text-primary">User Registration</h2>
+			<hr/>
+		</div>
+		<div class="mb-3">
+			<label> User Name </label>
+			<input asp-for="UserName" type="text" class="form-control">
+			<label> Password </label>
+			<input asp-for="PassWord" type="text" class="form-control">
+			<label> Role </label>
+			@Html.DropDownListFor(m => m.Role, Enum.GetValues(typeof(UserRoles)).Cast<UserRoles>().Select(r => new SelectListItem { Text = r.ToString(), Value = r.ToString() }),  new { @class = "form-control custom-dropdown" })
+		</div> 
+		<button type="submit" class="btn btn-primary" style="width:150px">Register</button>
+		<a asp-controller="Accaunt" asp-action="Index" class="btn btn-secondary" style="width:150px"> Back to Accaunt </a>
+	</div>
+</form>

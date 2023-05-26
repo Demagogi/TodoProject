@@ -27,14 +27,9 @@ namespace TodoProject.Controllers
         [HttpPost]
         public ActionResult Register(UserModel user)
         {
-            if (ModelState.IsValid)
-            {
-                _db.Users.Add(user);
-                _db.SaveChanges();
-                return RedirectToAction("Login");
-            }
-
-            return View(user);
+            _db.Users.Add(user);
+            _db.SaveChanges();
+            return RedirectToAction("Login", "Accaunt");
         }
 
         [HttpGet]
@@ -55,7 +50,7 @@ namespace TodoProject.Controllers
                 }
                 else if (existingUser.Role == UserRoles.User)
                 {
-                    return RedirectToAction("Index", "User");
+                    return RedirectToAction("Index", "User", new { userId = existingUser.Id });
                 }
             }
 

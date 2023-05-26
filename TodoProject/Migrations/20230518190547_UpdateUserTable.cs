@@ -5,18 +5,24 @@
 namespace TodoProject.Migrations
 {
     /// <inheritdoc />
-    public partial class TestingItems : Migration
+    public partial class UpdateUserTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.RenameColumn(
+                name: "Role",
+                table: "Users",
+                newName: "UserRole");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.RenameColumn(
+                name: "UserRole",
+                table: "Users",
+                newName: "Role");
         }
     }
 }
