@@ -1,0 +1,22 @@
+﻿@model ToDoListItems
+
+<form method="post">
+	@Html.HiddenFor(x => x.ToDoListId)
+	<div class="border p-3 mt-4">
+		<div class="row pb-2">
+			<h2 class="text-primary">Edit Item</h2>
+			<hr />
+		</div>
+		<div class="mb-3">
+			<label> Title </label>
+			<input asp-for="Title" type="text" class="form-control">
+			<label> Description </label>
+			<input asp-for="Description" type="text" class="form-control">
+			<label>Status</label>
+			@Html.DropDownListFor(m => m.Condition, Enum.GetValues(typeof(TaskItemCondition)).Cast<TaskItemCondition>().Select(r => new SelectListItem { Text = r.ToString(), Value = r.ToString() }),  new { @class = "form-control custom-dropdown" })
+		</div>
+		<button type="submit" class="btn btn-primary" style="width:150px">Submit Changes</button>
+		<a asp-controller="Manager" asp-action="Items" asp-route-Id="@Model.ToDoListId" class="btn btn-secondary" style="width:150px"> Back to List </a>
+	</div>
+</form>
+

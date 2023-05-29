@@ -1,1 +1,34 @@
-﻿<h1> does this wortk?</h1>
+﻿@model List<UserModel>
+
+<div class="container">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary"> ToDo List </h2>
+        </div>
+        <div class="col-6 text-end">
+        </div>
+    </div>
+    <table class="table table-boarded table-striped">
+        <thead>
+            <tr>
+                <th> User IDs </th>
+                <th> User Names</th>
+                <th> User Roles</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var todos in Model)
+            {
+                <tr>
+                    <td>@todos.Id</td>
+                    <td> @todos.UserName </td>
+                    <td>@todos.Role</td>
+                    @if(todos.Role == UserRoles.User)
+                    {
+                        <td><a asp-controller="Manager" asp-action="UserDetails" asp-route-Id="@todos.Id" class="btn btn-secondary text-end bg-info"> See User Todos </a></td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

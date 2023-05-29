@@ -1,11 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using TodoProject.DATA;
+using TodoProject.Hubs;
 using TodoProject.Models;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TodoProject.Controllers
 {
+    [Authorize]
     public class ToDoListController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -110,15 +115,15 @@ namespace TodoProject.Controllers
 
             return View(model);
         }
-        public IActionResult EditItem(int? id)
+        public  async Task<IActionResult> EditItem(int? id)
         {
             if (id == null || id == 0)
             {
                 return NotFound();
             }
 
-            ToDoListItems ToDoFromDb = _db.ToDoListItems.FirstOrDefault(x => x.Id == id); ;
-
+            ToDoListItems ToDoFromDb = _db.ToDoListItems.FirstOrDefault(x => x.Id == id); //todolist item bazidan
+      
             if (ToDoFromDb == null)
             {
                 return NotFound();
@@ -131,6 +136,7 @@ namespace TodoProject.Controllers
         {
             _db.ToDoListItems.Update(obj);
             _db.SaveChanges();
+
             return RedirectToAction("Index", "ToDoList");
         }
         public IActionResult Edit(int? id)
