@@ -4,25 +4,29 @@ using Microsoft.EntityFrameworkCore;
 using TodoProject.DataAccess.Data;
 using TodoProject.Models.Models;
 using TodoProject.Hubs;
-
+using ToDoProject.DataAccess.Repository.IRepository;
 
 namespace TodoProject.Controllers
 {
     public class ManagerController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IUserRepository _Userrepo;
+        private readonly IToDoRepository _repo;
+        private readonly IToDoListItemsRepository _Itemsrepo;
 
         private readonly IHubContext<UserHub> _hubContext;
 
-        public ManagerController(ApplicationDbContext db, IHubContext<UserHub> hubContext)
+        public ManagerController(IUserRepository Userrepo, IToDoRepository repo, IToDoListItemsRepository Itemsrepo, IHubContext<UserHub> hubContext)
         {
-            _db = db;
+            _Userrepo = Userrepo;
+            _repo = repo;
+            _Itemsrepo = Itemsrepo;
             _hubContext = hubContext;
         }
 
         public IActionResult Index()
         {
-            List<UserModel> users = _db.Users.ToList();
+            List<UserModel> users = _Userrepo.GetAll().ToList();
             return View(users);
         }
 
@@ -33,8 +37,8 @@ namespace TodoProject.Controllers
                 return NotFound();
             }
 
-            ToDoList list = _db.ToDoList.FirstOrDefault(x => x.Id == id);
-            UserModel user = _db.Users.Include(x => x.UserToDos).FirstOrDefault(x => x.Id == list.UserModelId);
+            ToDoList list = _repo.Get(x => x.Id == id);
+            UserModel user = _Userrepo.Get(x => x.Id == list.UserModelId, "UserToDos");
             return View(user.UserToDos);
         }
 
@@ -44,7 +48,7 @@ namespace TodoProject.Controllers
             {
                 return NotFound();
             }
-            ToDoList ToDoFromDb = _db.ToDoList.Include(t => t.Items).FirstOrDefault(t => t.Id == id);
+            ToDoList ToDoFromDb = _repo.Get(t => t.Id == id, "Items");
             if (ToDoFromDb == null)
             {
                 return NotFound();
@@ -59,7 +63,7 @@ namespace TodoProject.Controllers
                 return NotFound();
             }
 
-            ToDoList toDoFromDb = _db.ToDoList.Include(x => x.Items).FirstOrDefault(x => x.Id == id);
+            ToDoList toDoFromDb = _repo.Get(x => x.Id == id, "Items");
 
             if (toDoFromDb == null)
             {
@@ -82,7 +86,7 @@ namespace TodoProject.Controllers
                 return NotFound();
             }
 
-            ToDoListItems ToDoFromDb = _db.ToDoListItems.FirstOrDefault(x => x.Id == id); //todolist item bazidan
+            ToDoListItems ToDoFromDb = _Itemsrepo.Get(x => x.Id == id); //todolist item bazidan
 
             if (ToDoFromDb == null)
             {
@@ -94,12 +98,12 @@ namespace TodoProject.Controllers
         [HttpPost]
         public async Task<IActionResult> EditItem(ToDoListItems obj)
         {
-            _db.ToDoListItems.Update(obj);
-            _db.SaveChanges();
+            _Itemsrepo.Update(obj);
+            _Itemsrepo.Save();
 
-            ToDoListItems ToDoFromDb = _db.ToDoListItems.FirstOrDefault(x => x.Id == obj.Id); //todolist item bazidan
-            ToDoList list = _db.ToDoList.Include(x => x.Items).FirstOrDefault(x => x.Id == ToDoFromDb.ToDoListId); // shesabamisi list 
-            UserModel user = _db.Users.Include(x => x.UserToDos).FirstOrDefault(x => x.Id == list.UserModelId); // listis shesabamisi user
+            ToDoListItems ToDoFromDb = _Itemsrepo.Get(x => x.Id == obj.Id); //todolist item bazidan
+            ToDoList list = _repo.Get(x => x.Id == ToDoFromDb.ToDoListId, "Items"); // shesabamisi list 
+            UserModel user = _Userrepo.Get(x => x.Id == list.UserModelId, "UserToDos"); // listis shesabamisi user
 
 
             await _hubContext.Clients.User(user.Id.ToString()).SendAsync("notifyTaskStatus");

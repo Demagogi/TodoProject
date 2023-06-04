@@ -2,20 +2,21 @@
 using Microsoft.EntityFrameworkCore;
 using TodoProject.DataAccess.Data;
 using TodoProject.Models.Models;
+using ToDoProject.DataAccess.Repository.IRepository;
 
 namespace TodoProject.Controllers
 {
     public class UserController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IUserRepository _Userrepo;
 
-        public UserController(ApplicationDbContext db)
+        public UserController(IUserRepository Userrepo)
         {
-            _db = db;
+            _Userrepo = Userrepo;
         }
         public IActionResult Index(int? userId)
         {
-            UserModel user = _db.Users.Include(t=>t.UserToDos).FirstOrDefault(t=>t.Id == userId);
+            UserModel user = _Userrepo.Get(t=>t.Id == userId, "UserToDos");
             return View(user);
         }
     }

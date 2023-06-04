@@ -8,5 +8,6 @@ namespace ToDoProject.Utils
 {
     public static class Utilites
     {
+        // Here must be some kind of utils
     }
 }

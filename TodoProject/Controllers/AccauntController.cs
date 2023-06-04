@@ -5,16 +5,17 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using TodoProject.DataAccess.Data;
 using TodoProject.Models.Models;
+using ToDoProject.DataAccess.Repository.IRepository;
 
 namespace TodoProject.Controllers
 {
     public class AccauntController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IUserRepository _Userrepo;
 
-        public AccauntController(ApplicationDbContext db)
+        public AccauntController(IUserRepository Userrepo)
         {
-            _db = db;
+            _Userrepo = Userrepo;
         }
 
         public ActionResult Index()
@@ -30,8 +31,8 @@ namespace TodoProject.Controllers
         [HttpPost]
         public ActionResult Register(UserModel user)
         {
-            _db.Users.Add(user);
-            _db.SaveChanges();
+            _Userrepo.Add(user);
+            _Userrepo.Save();
             return RedirectToAction("Login", "Accaunt");
         }
 
@@ -44,7 +45,7 @@ namespace TodoProject.Controllers
         [HttpPost]
         public async Task<ActionResult> Login(UserModel user)
         {
-            var existingUser = _db.Users.FirstOrDefault(u => u.UserName == user.UserName && u.PassWord == user.PassWord);
+            var existingUser = _Userrepo.Get(u => u.UserName == user.UserName && u.PassWord == user.PassWord);
 
             if (existingUser != null)
             {

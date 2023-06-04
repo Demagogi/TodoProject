@@ -7,28 +7,33 @@ using TodoProject.Models.Models;
 using TodoProject.Hubs;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using ToDoProject.DataAccess.Repository.IRepository;
 
 namespace TodoProject.Controllers
 {
     [Authorize]
     public class ToDoListController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IToDoRepository _repo;
+        private readonly IToDoListItemsRepository _Itemsrepo;
+        private readonly IUserRepository _Userrepo;
 
-        public ToDoListController(ApplicationDbContext db)
+        public ToDoListController(IToDoRepository repo, IToDoListItemsRepository itemsrepo, IUserRepository userrepo)
         {
-            _db = db;
+            _repo = repo;
+            _Itemsrepo = itemsrepo;
+            _Userrepo = userrepo;
         }
 
         public IActionResult Index()
         {
-            List<ToDoList> objectToDoList = _db.ToDoList.ToList();
+            List<ToDoList> objectToDoList = _repo.GetAll().ToList();
             return View(objectToDoList);
         }
 
         public IActionResult Create(int? id)
         {
-            UserModel user = _db.Users.Include(t => t.UserToDos).FirstOrDefault(t => t.Id == id);
+            UserModel user = _Userrepo.Get(t => t.Id == id, "UserToDos");
             var todo = new CreateToDoListViewModel
             {
                 UserModelId = user.Id
@@ -46,15 +51,15 @@ namespace TodoProject.Controllers
                 UserModelId = obj.UserModelId
             };
 
-            _db.ToDoList.Add(list);
-            _db.SaveChanges();
+            _repo.Add(list);
+            _repo.Save();
             return RedirectToAction("Index", "User", new { userId = obj.UserModelId });
 
         }
 
         public IActionResult CreateItem(int? id)
         {
-            ToDoList list = _db.ToDoList.Include(t => t.Items).FirstOrDefault(t => t.Id == id);
+            ToDoList list = _repo.Get(u => u.Id == id, "Items");
             
             var model = new CreateToDoListItemViewModel
             {
@@ -74,8 +79,8 @@ namespace TodoProject.Controllers
                 ToDoListId = obj.ToDoListId
             };
 
-            _db.ToDoListItems.Add(item);
-            _db.SaveChanges();
+            _Itemsrepo.Add(item);
+            _Itemsrepo.Save();
             return RedirectToAction("Index", "ToDoList");
         }
 
@@ -85,7 +90,7 @@ namespace TodoProject.Controllers
             {
                 return NotFound();
             }
-            ToDoList ToDoFromDb = _db.ToDoList.Include(t => t.Items).FirstOrDefault(t => t.Id == id);
+            ToDoList ToDoFromDb = _repo.Get(u => u.Id == id, "Items");
             if (ToDoFromDb == null)
             {
                 return NotFound();
@@ -100,7 +105,7 @@ namespace TodoProject.Controllers
                 return NotFound();
             }
       
-            ToDoList toDoFromDb = _db.ToDoList.Include(x => x.Items).FirstOrDefault(x => x.Id == id);
+            ToDoList toDoFromDb = _repo.Get(u => u.Id == id, "Items");
 
             if (toDoFromDb == null)
             {
@@ -122,21 +127,21 @@ namespace TodoProject.Controllers
                 return NotFound();
             }
 
-            ToDoListItems ToDoFromDb = _db.ToDoListItems.FirstOrDefault(x => x.Id == id); //todolist item bazidan
+            ToDoListItems ToDoItemFromDb = _Itemsrepo.Get(x => x.Id == id);
       
-            if (ToDoFromDb == null)
+            if (ToDoItemFromDb == null)
             {
                 return NotFound();
             }
-            return View(ToDoFromDb);
+            return View(ToDoItemFromDb);
         }
 
         [HttpPost]
         public IActionResult EditItem(ToDoListItems obj)
         {
-            _db.ToDoListItems.Update(obj);
-            _db.SaveChanges();
-
+            _Itemsrepo.Update(obj);
+            _Itemsrepo.Save();
+    
             return RedirectToAction("Index", "ToDoList");
         }
         public IActionResult Edit(int? id)
@@ -145,7 +150,7 @@ namespace TodoProject.Controllers
             {
                 return NotFound();
             }
-            ToDoList ToDoFromDb = _db.ToDoList.Find(id);
+            ToDoList ToDoFromDb = _repo.Get(u => u.Id == id);
             if (ToDoFromDb == null)
             {
                 return NotFound();
@@ -156,8 +161,8 @@ namespace TodoProject.Controllers
         [HttpPost]
         public IActionResult Edit(ToDoList obj)
         {
-            _db.ToDoList.Update(obj);
-            _db.SaveChanges();
+            _repo.Update(obj);
+            _repo.Save();
             return RedirectToAction("Index");
         }
 
@@ -167,24 +172,24 @@ namespace TodoProject.Controllers
             {
                 return NotFound();
             }
-            ToDoList categoryFromDb = _db.ToDoList.Find(id); 
-            if (categoryFromDb == null)
+            ToDoList ToDoFromDb = _repo.Get(u=>u.Id==id); 
+            if (ToDoFromDb == null)
             {
                 return NotFound();
             }
-            return View(categoryFromDb);
+            return View(ToDoFromDb);
         }
 
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id) 
         {
-            ToDoList obj = _db.ToDoList.Find(id);
+            ToDoList obj = _repo.Get(u => u.Id == id);
             if (obj == null)
             {
                 return NotFound();
             }
-            _db.ToDoList.Remove(obj);
-            _db.SaveChanges();
+            _repo.Delete(obj);
+            _repo.Save();
             return RedirectToAction("Index");
         }
 
@@ -194,7 +199,7 @@ namespace TodoProject.Controllers
             {
                 return NotFound();
             }
-            ToDoListItems ItemFromDb = _db.ToDoListItems.Find(id);
+            ToDoListItems ItemFromDb = _Itemsrepo.Get(x => x.Id == id);
             if (ItemFromDb == null)
             {
                 return NotFound();
@@ -205,13 +210,13 @@ namespace TodoProject.Controllers
         [HttpPost, ActionName("DeleteItem")]
         public IActionResult DeleteItemPost(int? id)
         {
-            ToDoListItems obj = _db.ToDoListItems.Find(id);
+            ToDoListItems obj = _Itemsrepo.Get(x => x.Id == id);
             if (obj == null)
             {
                 return NotFound();
             }
-            _db.ToDoListItems.Remove(obj);
-            _db.SaveChanges();
+            _Itemsrepo.Delete(obj);
+            _Itemsrepo.Save();
             return RedirectToAction("Index");
         }
     }
