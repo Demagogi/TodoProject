@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using TodoProject.DATA;
+using TodoProject.DataAccess.Data;
 using TodoProject.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);

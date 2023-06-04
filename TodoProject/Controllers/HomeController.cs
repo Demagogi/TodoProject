@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using TodoProject.Models;
+using TodoProject.Models.Models;
 
 namespace TodoProject.Controllers
 {

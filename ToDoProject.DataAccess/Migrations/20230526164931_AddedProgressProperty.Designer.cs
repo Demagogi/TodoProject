@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TodoProject.DATA;
+using TodoProject.DataAccess.Data;
 
 #nullable disable
 
-namespace TodoProject.Migrations
+namespace TodoProject.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230518190547_UpdateUserTable")]
-    partial class UpdateUserTable
+    [Migration("20230526164931_AddedProgressProperty")]
+    partial class AddedProgressProperty
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,10 @@ namespace TodoProject.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Condition")
+                        .HasColumnType("int")
+                        .HasColumnName("TaskCondition");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -53,6 +57,7 @@ namespace TodoProject.Migrations
                         new
                         {
                             Id = 1,
+                            Condition = 0,
                             Description = "Test Task 10 Description",
                             Name = "Test Task 10",
                             UserModelId = 1

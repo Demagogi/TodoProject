@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace TodoProject.Migrations
+namespace TodoProject.DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class ReplacedCondditionPoperty : Migration

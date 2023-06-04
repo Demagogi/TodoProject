@@ -1,4 +1,4 @@
-﻿namespace TodoProject.Models
+﻿namespace TodoProject.Models.Models 
 {
     public class CreateToDoListViewModel
     {

@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using TodoProject.DATA;
+using TodoProject.DataAccess.Data;
+using TodoProject.Models.Models;
 using TodoProject.Hubs;
-using TodoProject.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 

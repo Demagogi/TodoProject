@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TodoProject.DATA;
-using TodoProject.Models;
+using TodoProject.DataAccess.Data;
+using TodoProject.Models.Models;
 
 namespace TodoProject.Controllers
 {

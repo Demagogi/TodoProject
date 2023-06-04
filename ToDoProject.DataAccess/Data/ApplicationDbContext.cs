@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Diagnostics;
-using TodoProject.Models;
+using TodoProject.Models.Models;
 
-namespace TodoProject.DATA
+namespace TodoProject.DataAccess.Data
 {
     public class ApplicationDbContext : DbContext
     {

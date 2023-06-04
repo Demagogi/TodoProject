@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using TodoProject.DATA;
+using TodoProject.DataAccess.Data;
+using TodoProject.Models.Models;
 using TodoProject.Hubs;
-using TodoProject.Models;
+
 
 namespace TodoProject.Controllers
 {
