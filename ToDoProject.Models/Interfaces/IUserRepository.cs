@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TodoProject.Models.Models;
+using TodoProject.Domain.Models;
 
-namespace ToDoProject.DataAccess.Repository.IRepository
+namespace ToDoProject.Domain.Interfaces
 {
     public interface IUserRepository : IRepository<UserModel>
     {

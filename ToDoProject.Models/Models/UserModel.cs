@@ -1,4 +1,4 @@
-﻿namespace TodoProject.Models.Models
+﻿namespace TodoProject.Domain.Models
 {
     public class UserModel
     {

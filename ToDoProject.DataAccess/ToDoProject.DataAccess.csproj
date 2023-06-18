@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -16,8 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ToDoProject.Models\ToDoProject.Models.csproj" />
-    <ProjectReference Include="..\ToDoProject.Utils\ToDoProject.Utils.csproj" />
+    <ProjectReference Include="..\ToDoProject.Models\ToDoProject.Domain.csproj" />
   </ItemGroup>
 
 </Project>

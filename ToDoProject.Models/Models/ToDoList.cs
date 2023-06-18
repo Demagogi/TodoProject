@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TodoProject.Models.Models
+
+namespace TodoProject.Domain.Models
 {
     public class ToDoList
     {

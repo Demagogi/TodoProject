@@ -16,7 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ToDoProject.Application\ToDoProject.Application.csproj" />
     <ProjectReference Include="..\ToDoProject.DataAccess\ToDoProject.DataAccess.csproj" />
+    <ProjectReference Include="..\ToDoProject.Models\ToDoProject.Domain.csproj" />
   </ItemGroup>
 
 </Project>
