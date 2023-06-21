@@ -3,19 +3,17 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using TodoProject.DataAccess.Data;
-using ToDoProject.DataAccess.Repository.IRepository;
-using TodoProject.Domain.Models;
+using ToDoProject.Application.Services;
 
 namespace TodoProject.Controllers
 {
     public class AccauntController : Controller
     {
-        private readonly IUserRepository _Userrepo;
+        private readonly IUserApplicationService _userService;
 
-        public AccauntController(IUserRepository Userrepo)
+        public AccauntController(IUserApplicationService userService)
         {
-            _Userrepo = Userrepo;
+            _userService = userService;
         }
 
         public ActionResult Index()

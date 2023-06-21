@@ -10,7 +10,7 @@ namespace ToDoProject.Application.Services
     public interface IUserApplicationService
     {
         List<UserViewModel> GetUsersForDisplay();
-        UserViewModel GetUserForDisplay();
+        UserViewModel GetUserForDisplay(int id);
         void UpdateUserView(UserViewModel userView);
         void AddUserView(UserViewModel userView);
         void RemoveUserView(UserViewModel userView);

@@ -11,8 +11,7 @@ namespace ToDoProject.Domain.Interfaces
     public interface IToDoListService
     {
         List<ToDoList> GetAllToDos();
-        ToDoList GetToDo(Expression<Func<ToDoList, bool>> filter, string includeProperties = null);
-
+        ToDoList GetToDo(int id);
         void AddToDo(ToDoList todo);
         void RemoveToDo(ToDoList todo);
         void UpdateToDo(ToDoList todo);

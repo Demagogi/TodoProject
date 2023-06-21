@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using TodoProject.Domain.Models;
+﻿using TodoProject.Domain.Models;
 using ToDoProject.Domain.Interfaces;
 
 namespace ToDoProject.Domain.Services
@@ -30,10 +24,7 @@ namespace ToDoProject.Domain.Services
             return todos.ToList();
         }
 
-        public ToDoList GetToDo(Expression<Func<ToDoList, bool>> filter, string includeProperties = null)
-        {
-            throw new NotImplementedException();
-        }
+        public ToDoList GetToDo(int id) => _repository.Get(x => x.Id == id, x => x.Items);
 
         public void RemoveToDo(ToDoList todo)
         {

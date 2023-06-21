@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoProject.DataAccess.Data;
-using TodoProject.Models.Models;
-using ToDoProject.DataAccess.Repository.IRepository;
+using ToDoProject.Application.Services;
 
 namespace TodoProject.Controllers
 {
     public class UserController : Controller
     {
-        private readonly IUserRepository _Userrepo;
+        private readonly IUserApplicationService _userService;
 
-        public UserController(IUserRepository Userrepo)
+        public UserController(IUserApplicationService userService)
         {
-            _Userrepo = Userrepo;
+            _userService = userService;
         }
         public IActionResult Index(int? userId)
         {
-            UserModel user = _Userrepo.Get(t=>t.Id == userId, "UserToDos");
-            return View(user);
+            //UserModel user = _Userrepo.Get(t=>t.Id == userId, "UserToDos");
+            var userView = _userService.GetUserForDisplay();
+            return View(userView);
         }
     }
 }

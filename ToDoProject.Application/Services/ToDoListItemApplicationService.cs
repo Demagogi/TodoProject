@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TodoProject.Application.ViewModels;
+﻿using TodoProject.Application.ViewModels;
 using ToDoProject.Application.Mappers;
 using ToDoProject.Domain.Interfaces;
 
@@ -32,9 +27,10 @@ namespace ToDoProject.Application.Services
             return itemsViewModel;
         }
 
-        public ToDoListItemViewModel GetItemToView()
+        public ToDoListItemViewModel GetItemToView(int id)
         {
-            throw new NotImplementedException();
+            var itemView = _service.GetItem(id);
+            return ToDoListItemMapper.MapItemsModelToItemsViewModel(itemView);
         }
 
         public void RemoveItemView(ToDoListItemViewModel item)

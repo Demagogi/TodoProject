@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using TodoProject.DataAccess.Data;
 using ToDoProject.Domain.Interfaces;
 
@@ -12,44 +7,43 @@ namespace ToDoProject.DataAccess.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly ApplicationDbContext _db;
-        internal DbSet<T> dbSet;
-        public Repository(ApplicationDbContext db) 
+        private readonly ApplicationDbContext _context;
+        public Repository(ApplicationDbContext context) 
         {
-            _db = db;
-            this.dbSet = _db.Set<T>();
+            _context = context;
         }
 
         public void Add(T entity)
         {
-            dbSet.Add(entity);
+            _context.Set<T>().Add(entity);
         }
 
         public void Delete(T entity)
         {
-            dbSet.Remove(entity);
+            _context.Set<T>().Remove(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter, string includeProperties = null)
+        public T Get(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] includeProperties)
         {
-            IQueryable<T> query = dbSet;
+            IQueryable<T> query = _context.Set<T>();
 
             if (includeProperties != null)
             {
-                string[] includeArray = includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string includeProperty in includeArray)
+                foreach (var includeProperty in includeProperties)
                 {
                     query = query.Include(includeProperty);
                 }
             }
 
             query = query.Where(filter);
+
             return query.FirstOrDefault(filter);
         }
 
         public IEnumerable<T> GetAll()
         {
-            IQueryable<T> query = dbSet;
+            IQueryable<T> query = _context.Set<T>();
+
             return query.ToList();
         }
     }

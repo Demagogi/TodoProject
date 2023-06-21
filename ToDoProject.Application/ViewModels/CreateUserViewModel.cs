@@ -7,13 +7,11 @@ using TodoProject.Application.ViewModels;
 
 namespace ToDoProject.Application.ViewModels
 {
-    public class UserViewModel
+    public class CreateUserViewModel
     {
-        public int Id { get; set; }
         public string UserName { get; set; }
         public string PassWord { get; set; }
         public UserRoles Role { get; set; }
         public List<ToDoListViewModel> UserToDos { get; set; }
     }
 }
-

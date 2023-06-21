@@ -15,11 +15,13 @@ namespace TodoProject.Controllers
     {
         private readonly IToDoListApplicationService _listService;
         private readonly IToDoListItemApplicationService _itemService;
+        private readonly IUserApplicationService _userService;
 
-        public ToDoListController(IToDoListApplicationService listService, IToDoListItemApplicationService itemService)
+        public ToDoListController(IToDoListApplicationService listService, IToDoListItemApplicationService itemService, IUserApplicationService userService)
         {
             _listService = listService;
             _itemService = itemService;
+            _userService = userService;
         }
 
         public IActionResult Index()
@@ -31,7 +33,7 @@ namespace TodoProject.Controllers
         public IActionResult Create(int? id)
         {
             //UserModel user = _Userrepo.Get(t => t.Id == id, "UserToDos");
-
+            var user = _userService.GetUsersForDisplay();
             //var todo = new CreateToDoListViewModel
             //{
             //    UserModelId = user.Id

@@ -2,32 +2,31 @@
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using TodoProject.DataAccess.Data;
-using TodoProject.Models.Models;
 using TodoProject.Hubs;
-using ToDoProject.DataAccess.Repository.IRepository;
+using ToDoProject.Application.Services;
 
 namespace TodoProject.Controllers
 {
     public class ManagerController : Controller
     {
-        private readonly IUserRepository _Userrepo;
-        private readonly IToDoRepository _repo;
-        private readonly IToDoListItemsRepository _Itemsrepo;
+        private readonly IUserApplicationService _userService;
+        private readonly IToDoListApplicationService _toDoListService;
+        private readonly IToDoListItemApplicationService _ToDoListItemService;
 
         private readonly IHubContext<UserHub> _hubContext;
 
-        public ManagerController(IUserRepository Userrepo, IToDoRepository repo, IToDoListItemsRepository Itemsrepo, IHubContext<UserHub> hubContext)
+        public ManagerController(IUserApplicationService userService, IToDoListApplicationService toDoListService, IToDoListItemApplicationService ToDoListItemService, IHubContext<UserHub> hubContext)
         {
-            _Userrepo = Userrepo;
-            _repo = repo;
-            _Itemsrepo = Itemsrepo;
+            _userService = userService;
+            _toDoListService = toDoListService;
+            _ToDoListItemService = ToDoListItemService;
             _hubContext = hubContext;
         }
 
         public IActionResult Index()
         {
-            List<UserModel> users = _Userrepo.GetAll().ToList();
-            return View(users);
+            var usersView = _userService.GetUsersForDisplay();
+            return View(usersView);
         }
 
         public IActionResult UserDetails(int? id) 
@@ -37,8 +36,10 @@ namespace TodoProject.Controllers
                 return NotFound();
             }
 
-            ToDoList list = _repo.Get(x => x.Id == id);
-            UserModel user = _Userrepo.Get(x => x.Id == list.UserModelId, "UserToDos");
+            //ToDoList list = _repo.Get(x => x.Id == id);
+            //UserModel user = _Userrepo.Get(x => x.Id == list.UserModelId, "UserToDos");
+            var listView = _toDoListService.GetToDoView();
+            var user = _userService.GetUserForDisplay();
             return View(user.UserToDos);
         }
 
@@ -48,12 +49,13 @@ namespace TodoProject.Controllers
             {
                 return NotFound();
             }
-            ToDoList ToDoFromDb = _repo.Get(t => t.Id == id, "Items");
-            if (ToDoFromDb == null)
+            //ToDoList ToDoFromDb = _repo.Get(t => t.Id == id, "Items");
+            var todoView = _toDoListService.GetToDoView();
+            if (todoView == null)
             {
                 return NotFound();
             }
-            return View(ToDoFromDb);
+            return View(todoView);
         }
 
         public IActionResult Items(int? id)
@@ -63,20 +65,21 @@ namespace TodoProject.Controllers
                 return NotFound();
             }
 
-            ToDoList toDoFromDb = _repo.Get(x => x.Id == id, "Items");
-
-            if (toDoFromDb == null)
+            //ToDoList toDoFromDb = _repo.Get(x => x.Id == id, "Items");
+            var todoView = _toDoListService.GetToDoView();
+            if (todoView == null)
             {
                 return NotFound();
             }
 
-            var model = new ToDoListItemsViewModel
-            {
-                ToDoListId = toDoFromDb.Id,
-                Items = toDoFromDb.Items
-            };
+            //var model = new ToDoListItemsViewModel
+            //{
+            //    ToDoListId = toDoFromDb.Id,
+            //    Items = toDoFromDb.Items
+            //};
+            var itemView = _ToDoListItemService.GetItemToView();
 
-            return View(model);
+            return View(itemView);
         }
 
         public IActionResult EditItem(int? id)
@@ -86,13 +89,13 @@ namespace TodoProject.Controllers
                 return NotFound();
             }
 
-            ToDoListItems ToDoFromDb = _Itemsrepo.Get(x => x.Id == id); //todolist item bazidan
-
-            if (ToDoFromDb == null)
+            //ToDoListItems ToDoFromDb = _Itemsrepo.Get(x => x.Id == id); //todolist item bazidan
+            var itemView = _ToDoListItemService.GetItemToView();
+            if (itemView == null)
             {
                 return NotFound();
             }
-            return View(ToDoFromDb);
+            return View(itemView);
         }
 
         [HttpPost]

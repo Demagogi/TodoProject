@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using TodoProject.Application.ViewModels;
+﻿using TodoProject.Application.ViewModels;
 using ToDoProject.Application.Mappers;
 using ToDoProject.Domain.Interfaces;
 
@@ -32,9 +26,10 @@ namespace ToDoProject.Application.Services
             return todoViewModels;
         }
 
-        public ToDoListViewModel GetToDoView(Expression<Func<ToDoListViewModel, bool>> filter, string includeProperties = null)
+        public ToDoListViewModel GetToDoView(int id)
         {
-            throw new NotImplementedException();
+            var listView = _service.GetToDo(id);
+            return ToDoListMapper.MapToToDoListModelToToDoListViewModel(listView);
         }
 
         public void RemoveToDoView(ToDoListViewModel todoView)

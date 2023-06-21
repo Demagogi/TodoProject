@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ToDoProject.Application.Mappers;
+﻿using ToDoProject.Application.Mappers;
 using ToDoProject.Application.ViewModels;
 using ToDoProject.Domain.Interfaces;
 
@@ -23,9 +18,10 @@ namespace ToDoProject.Application.Services
             _userService.AddUser(UserMapper.MapUserViewModelToUserModel(userView));
         }
 
-        public UserViewModel GetUserForDisplay()
+        public UserViewModel GetUserForDisplay(int id)
         {
-            throw new NotImplementedException();
+            var user = _userService.GetUser(id);
+            return UserMapper.MapUserModelToUserViewModel(user);
         }
 
         public List<UserViewModel> GetUsersForDisplay()
