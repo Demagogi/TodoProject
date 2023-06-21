@@ -1,9 +1,9 @@
-﻿
-namespace TodoProject.Application.ViewModels
+﻿using TodoProject.Application.ViewModels;
+
+namespace ToDoProject.Application.ViewModels
 {
-    public class ToDoListViewModel
+    public class CreateToDoListViewModel
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public int UserModelId { get; set; }

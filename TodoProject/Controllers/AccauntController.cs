@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using ToDoProject.Application.Services;
+using ToDoProject.Application.ViewModels;
 
 namespace TodoProject.Controllers
 {
@@ -27,10 +27,9 @@ namespace TodoProject.Controllers
         }
 
         [HttpPost]
-        public ActionResult Register(UserModel user)
+        public ActionResult Register(CreateUserViewModel user)
         {
-            _Userrepo.Add(user);
-            _Userrepo.Save();
+            _userService.AddUserView(user);
             return RedirectToAction("Login", "Accaunt");
         }
 
@@ -41,9 +40,9 @@ namespace TodoProject.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login(UserModel user)
+        public async Task<ActionResult> Login(UserViewModel user)
         {
-            var existingUser = _Userrepo.Get(u => u.UserName == user.UserName && u.PassWord == user.PassWord);
+            var existingUser = _userService.GetUserForDisplay(user.Id);
 
             if (existingUser != null)
             {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ToDoProject.Application.ViewModels;
+﻿using ToDoProject.Application.ViewModels;
 
 namespace ToDoProject.Application.Services
 {
@@ -12,7 +7,7 @@ namespace ToDoProject.Application.Services
         List<UserViewModel> GetUsersForDisplay();
         UserViewModel GetUserForDisplay(int id);
         void UpdateUserView(UserViewModel userView);
-        void AddUserView(UserViewModel userView);
+        void AddUserView(CreateUserViewModel userView);
         void RemoveUserView(UserViewModel userView);
     }
 }

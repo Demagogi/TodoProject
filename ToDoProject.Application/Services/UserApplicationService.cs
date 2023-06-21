@@ -13,9 +13,9 @@ namespace ToDoProject.Application.Services
             _userService = userService;
         }
 
-        public void AddUserView(UserViewModel userView)
+        public void AddUserView(CreateUserViewModel userView)
         {
-            _userService.AddUser(UserMapper.MapUserViewModelToUserModel(userView));
+            _userService.AddUser(UserMapper.MapCreateUserModelToUserModel(userView));
         }
 
         public UserViewModel GetUserForDisplay(int id)

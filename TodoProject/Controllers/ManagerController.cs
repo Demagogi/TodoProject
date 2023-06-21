@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
-using TodoProject.DataAccess.Data;
+using TodoProject.Application.ViewModels;
 using TodoProject.Hubs;
 using ToDoProject.Application.Services;
 
@@ -29,7 +28,7 @@ namespace TodoProject.Controllers
             return View(usersView);
         }
 
-        public IActionResult UserDetails(int? id) 
+        public IActionResult UserDetails(int id) 
         {
             if (id == null || id == 0)
             {
@@ -38,19 +37,19 @@ namespace TodoProject.Controllers
 
             //ToDoList list = _repo.Get(x => x.Id == id);
             //UserModel user = _Userrepo.Get(x => x.Id == list.UserModelId, "UserToDos");
-            var listView = _toDoListService.GetToDoView();
-            var user = _userService.GetUserForDisplay();
+            var listView = _toDoListService.GetToDoView(id);
+            var user = _userService.GetUserForDisplay(listView.UserModelId);
             return View(user.UserToDos);
         }
 
-        public IActionResult ToDoDetails(int? id) 
+        public IActionResult ToDoDetails(int id) 
         {
             if (id == null || id == 0)
             {
                 return NotFound();
             }
             //ToDoList ToDoFromDb = _repo.Get(t => t.Id == id, "Items");
-            var todoView = _toDoListService.GetToDoView();
+            var todoView = _toDoListService.GetToDoView(id);
             if (todoView == null)
             {
                 return NotFound();
@@ -58,7 +57,7 @@ namespace TodoProject.Controllers
             return View(todoView);
         }
 
-        public IActionResult Items(int? id)
+        public IActionResult Items(int id)
         {
             if (id == null || id == 0)
             {
@@ -66,7 +65,7 @@ namespace TodoProject.Controllers
             }
 
             //ToDoList toDoFromDb = _repo.Get(x => x.Id == id, "Items");
-            var todoView = _toDoListService.GetToDoView();
+            var todoView = _toDoListService.GetToDoView(id);
             if (todoView == null)
             {
                 return NotFound();
@@ -77,12 +76,12 @@ namespace TodoProject.Controllers
             //    ToDoListId = toDoFromDb.Id,
             //    Items = toDoFromDb.Items
             //};
-            var itemView = _ToDoListItemService.GetItemToView();
+            var itemView = _ToDoListItemService.GetItemToView(); // #stack here
 
             return View(itemView);
         }
 
-        public IActionResult EditItem(int? id)
+        public IActionResult EditItem(int id)
         {
             if (id == null || id == 0)
             {
@@ -90,7 +89,7 @@ namespace TodoProject.Controllers
             }
 
             //ToDoListItems ToDoFromDb = _Itemsrepo.Get(x => x.Id == id); //todolist item bazidan
-            var itemView = _ToDoListItemService.GetItemToView();
+            var itemView = _ToDoListItemService.GetItemToView(id);
             if (itemView == null)
             {
                 return NotFound();
@@ -99,15 +98,14 @@ namespace TodoProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditItem(ToDoListItems obj)
+        public async Task<IActionResult> EditItem(ToDoListItemViewModel obj)
         {
-            _Itemsrepo.Update(obj);
-            _Itemsrepo.Save();
+            _ToDoListItemService.UpdateItemView(obj);
 
-            ToDoListItems ToDoFromDb = _Itemsrepo.Get(x => x.Id == obj.Id); //todolist item bazidan
-            ToDoList list = _repo.Get(x => x.Id == ToDoFromDb.ToDoListId, "Items"); // shesabamisi list 
-            UserModel user = _Userrepo.Get(x => x.Id == list.UserModelId, "UserToDos"); // listis shesabamisi user
-
+            var item = _ToDoListItemService.GetItemToView(obj.Id);//todolist item bazidan
+            // ToDoList list = _repo.Get(x => x.Id == ToDoFromDb.ToDoListId, "Items");
+            var list = _toDoListService.GetToDoView(item.ToDoListId); // shesabamisi list
+            var user = _userService.GetUserForDisplay(list.UserModelId); // listis shesabamisi user
 
             await _hubContext.Clients.User(user.Id.ToString()).SendAsync("notifyTaskStatus");
             //await _hubContext.Clients.All.SendAsync("notifyTaskStatus");

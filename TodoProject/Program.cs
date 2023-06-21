@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using TodoProject.DataAccess.Data;
 using TodoProject.Hubs;
+using ToDoProject.Application.Services;
 using ToDoProject.DataAccess.Repository;
-using ToDoProject.DataAccess.Repository.IRepository;
+using ToDoProject.Domain.Interfaces;
+using ToDoProject.Domain.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,14 @@ builder.Services.AddSignalR();
 builder.Services.AddScoped<IToDoRepository, ToDoRepository>();
 builder.Services.AddScoped<IToDoListItemsRepository, ToDoListItemsRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IToDoListItemService, ToDoListItemService>();
+builder.Services.AddScoped<IToDoListService, ToDoListService>();
+
+builder.Services.AddScoped<IToDoListApplicationService, ToDoListApplicationService>();
+builder.Services.AddScoped<IToDoListItemApplicationService, ToDoListItemApplicationService>();
+builder.Services.AddScoped<IUserApplicationService, UserApplicationService>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         .AddCookie();

@@ -1,5 +1,6 @@
 ﻿using TodoProject.Application.ViewModels;
 using ToDoProject.Application.Mappers;
+using ToDoProject.Application.ViewModels;
 using ToDoProject.Domain.Interfaces;
 
 namespace ToDoProject.Application.Services
@@ -13,9 +14,9 @@ namespace ToDoProject.Application.Services
             _service = service;
         }
 
-        public void AddItemView(ToDoListItemViewModel item)
+        public void AddItemView(CreateToDoListItemViewModel item)
         {
-            var itemModel = ToDoListItemMapper.MapItemsViewModelToItemsModel(item);
+            var itemModel = ToDoListItemMapper.MapCreateItemViewModelToItemModel(item);
             _service.AddItem(itemModel);
         }
 

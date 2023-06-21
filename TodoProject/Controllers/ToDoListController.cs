@@ -7,6 +7,8 @@ using TodoProject.Hubs;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using ToDoProject.Application.Services;
+using TodoProject.Application.ViewModels;
+using ToDoProject.Application.ViewModels;
 
 namespace TodoProject.Controllers
 {
@@ -30,10 +32,10 @@ namespace TodoProject.Controllers
             return View(toDoLists);
         }
 
-        public IActionResult Create(int? id)
+        public IActionResult Create(int id)
         {
             //UserModel user = _Userrepo.Get(t => t.Id == id, "UserToDos");
-            var user = _userService.GetUsersForDisplay();
+            var user = _userService.GetUserForDisplay(id);
             //var todo = new CreateToDoListViewModel
             //{
             //    UserModelId = user.Id
@@ -80,26 +82,26 @@ namespace TodoProject.Controllers
                 ToDoListId = obj.ToDoListId
             };
 
-            _Itemsrepo.Add(item);
-            _Itemsrepo.Save();
+            _itemService.AddItemView();
             return RedirectToAction("Index", "ToDoList");
         }
 
-        public IActionResult Details(int? id)
+        public IActionResult Details(int id)
         {
             if (id == null || id == 0)
             {
                 return NotFound();
             }
             //ToDoList ToDoFromDb = _repo.Get(u => u.Id == id, "Items");
-            if (ToDoFromDb == null)
+            var todo = _listService.GetToDoView(id);
+            if (todo == null)
             {
                 return NotFound();
             }
-            return View(ToDoFromDb);
+            return View(todo);
         }
 
-        public IActionResult Items(int? id)
+        public IActionResult Items(int id)
         {
             if (id == null || id == 0)
             {
@@ -107,7 +109,7 @@ namespace TodoProject.Controllers
             }
 
             //ToDoList toDoFromDb = _repo.Get(u => u.Id == id, "Items");
-            var todoView = _listService.GetToDoView();
+            var todoView = _listService.GetToDoView(id);
 
             if (todoView == null)
             {
@@ -116,7 +118,7 @@ namespace TodoProject.Controllers
 
             return View(todoView);
         }
-        public  async Task<IActionResult> EditItem(int? id)
+        public  async Task<IActionResult> EditItem(int id)
         {
             if (id == null || id == 0)
             {
@@ -124,7 +126,7 @@ namespace TodoProject.Controllers
             }
 
             //ToDoListItems ToDoItemFromDb = _Itemsrepo.Get(x => x.Id == id);
-            var item = _itemService.GetItemToView();
+            var item = _itemService.GetItemToView(id);
       
             if (item == null)
             {
@@ -134,19 +136,19 @@ namespace TodoProject.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditItem(ToDoListItems obj) // how to fix this ?
+        public IActionResult EditItem(ToDoListItemViewModel obj)
         {
             _itemService.UpdateItemView(obj);
             return RedirectToAction("Index", "ToDoList");
         }
-        public IActionResult Edit(int? id)
+        public IActionResult Edit(int id)
         {
             if (id == null || id == 0)
             {
                 return NotFound();
             }
             //ToDoList ToDoFromDb = _repo.Get(u => u.Id == id);
-            var todoView = _listService.GetToDoView();
+            var todoView = _listService.GetToDoView(id);
             if (todoView == null)
             {
                 return NotFound();
@@ -155,20 +157,20 @@ namespace TodoProject.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(ToDoList obj) // how to fix this?
+        public IActionResult Edit(ToDoListViewModel obj)
         {
             _listService.UpdateToDoView(obj);
             return RedirectToAction("Index");
         }
 
-        public IActionResult Delete(int? id) 
+        public IActionResult Delete(int id) 
         {
             if (id == null || id == 0)
             {
                 return NotFound();
             }
             //ToDoList ToDoFromDb = _repo.Get(u=>u.Id==id);
-            var todoView = _listService.GetToDoView();
+            var todoView = _listService.GetToDoView(id);
             if (todoView == null)
             {
                 return NotFound();
@@ -177,10 +179,10 @@ namespace TodoProject.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePost(int? id) 
+        public IActionResult DeletePost(int id) 
         {
             //ToDoList obj = _repo.Get(u => u.Id == id);
-            var obj = _listService.GetToDoView();
+            var obj = _listService.GetToDoView(id);
             if (obj == null)
             {
                 return NotFound();
@@ -189,14 +191,14 @@ namespace TodoProject.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult DeleteItem(int? id)
+        public IActionResult DeleteItem(int id)
         {
             if (id == null || id == 0)
             {
                 return NotFound();
             }
             //ToDoListItems ItemFromDb = _Itemsrepo.Get(x => x.Id == id);
-            var itemView = _itemService.GetItemToView();
+            var itemView = _itemService.GetItemToView(id);
             if (itemView == null)
             {
                 return NotFound();
@@ -205,10 +207,9 @@ namespace TodoProject.Controllers
         }
 
         [HttpPost, ActionName("DeleteItem")]
-        public IActionResult DeleteItemPost(int? id)
+        public IActionResult DeleteItemPost(int id)
         {
-            //ToDoListItems obj = _Itemsrepo.Get(x => x.Id == id);
-            var obj = _itemService.GetItemToView();
+            var obj = _itemService.GetItemToView(id);
             if (obj == null)
             {
                 return NotFound();

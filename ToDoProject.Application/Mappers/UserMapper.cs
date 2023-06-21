@@ -6,7 +6,7 @@ namespace ToDoProject.Application.Mappers
     public static class UserMapper
     {
 
-        private static UserModel MapCreateUserModelToUserModel(CreateUserViewModel model)
+        public static UserModel MapCreateUserModelToUserModel(CreateUserViewModel model)
         {
             var userModel = new UserModel();
 
