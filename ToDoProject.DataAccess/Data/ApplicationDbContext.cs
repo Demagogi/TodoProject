@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Diagnostics;
-
+using TodoProject.Domain.Models;
 
 namespace TodoProject.DataAccess.Data
 {

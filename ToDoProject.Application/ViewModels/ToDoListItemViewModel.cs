@@ -1,6 +1,6 @@
-﻿namespace TodoProject.Models.Models
+﻿namespace TodoProject.Application.ViewModels
 {
-    public class CreateToDoListItemViewModel
+    public class ToDoListItemViewModel
     {
         public string Title { get; set; }
 
@@ -8,6 +8,13 @@
 
         public TaskItemCondition Condition { get; set; }
         public int ToDoListId { get; set; }
+    }
+
+    public enum TaskItemCondition
+    {
+        NotStarted,
+        InProgress,
+        Completed
     }
 }
 

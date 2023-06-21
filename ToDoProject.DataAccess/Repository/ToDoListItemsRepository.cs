@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ToDoProject.DataAccess.Repository.IRepository;
-using TodoProject.Models.Models;
 using TodoProject.DataAccess.Data;
+using TodoProject.Domain.Models;
+using ToDoProject.Domain.Interfaces;
 
 namespace ToDoProject.DataAccess.Repository
 {

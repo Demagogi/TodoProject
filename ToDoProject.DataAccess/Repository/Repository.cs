@@ -6,8 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TodoProject.DataAccess.Data;
-using TodoProject.Models.Models;
-using ToDoProject.DataAccess.Repository.IRepository;
+using ToDoProject.Domain.Interfaces;
 
 namespace ToDoProject.DataAccess.Repository
 {

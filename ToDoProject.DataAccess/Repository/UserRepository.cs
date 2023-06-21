@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TodoProject.DataAccess.Data;
-using ToDoProject.DataAccess.Repository.IRepository;
-using TodoProject.Models.Models;
 using Microsoft.EntityFrameworkCore;
+using TodoProject.Domain.Models;
+using ToDoProject.Domain.Interfaces;
 
 namespace ToDoProject.DataAccess.Repository
 {

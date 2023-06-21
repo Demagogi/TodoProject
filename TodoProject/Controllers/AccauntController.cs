@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using TodoProject.DataAccess.Data;
-using TodoProject.Models.Models;
 using ToDoProject.DataAccess.Repository.IRepository;
+using TodoProject.Domain.Models;
 
 namespace TodoProject.Controllers
 {
